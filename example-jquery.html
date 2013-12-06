@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Ganipara JS API DEMO (jquery Versiyonu)</title>
+		<meta name="author" content="Ganipara" />
+		<!-- API'den dönen verilen incelenmesi içindir. Gerçek sitede kullanılmaması gerekir -->
+		<!--
+		<script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+		-->
+
+		<!-- jQuery kütüphanesini çağır -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+		<script>
+			var ganipara = ganipara || {};
+			var _gpv = _gpv || [];
+
+			// Ganipara mağaza adresi: ankara.ganipara.com
+			_gpv.push(['shop_id', 'ankara']);
+
+			// Gerçek sitede debug değeri false yada hiç kullanılmamalıdır.
+			_gpv.push(['debug', true]);
+
+			(function(a, b) {
+				a.onerror = function() {
+				};
+				var d = function() {
+					var a = b.createElement("script"), c = b.getElementsByTagName("script")[0];
+					a.src = "https://cdn.ganipara.com/script/api/v1.0/lib.js";
+					a.async = !0;
+					c.parentNode.insertBefore(a, c)
+				};
+				a.addEventListener ? a.addEventListener("load", d, !1) : a.attachEvent("onload", d)
+			})(window, document);
+
+		</script>
+
+		<script>
+			$(document).ready(function() {
+				console.log("Document Ready");
+			});
+
+			$(document).on('GaniparaReady', function() {
+
+				// Ganipara Kütüphanesi Hazır
+				console.log("Ganipara: JS Library Ready");
+
+				// Ganipara Penceresi Kapandığında
+				ganipara.register("onGPBoxClose", function() {
+					console.log("Ganipara: Modal Kapandı");
+				})
+
+				GPjQuery(".jq_getCart").click(function(e) {
+
+					e.preventDefault();
+					ganipara.getCart(function(response) {
+						console.log("Ganipara: Sepet Verisi");
+						console.log(response);
+
+					});
+
+				});
+
+				GPjQuery(".jq_clear").click(function(e) {
+
+					e.preventDefault();
+					ganipara.clear(function(response) {
+						console.log("Ganipara: Sepet Temizlendi");
+						console.log(response);
+					});
+
+				});
+
+				GPjQuery(".jq_updateItem").click(function(e) {
+
+					e.preventDefault();
+					ganipara.updateItem("a4a63e511cfb09010c7ed5a947dd1d27", "30", function(response) {
+						console.log(response);
+					});
+
+				});
+				GPjQuery(".jq_removeItem").click(function(e) {
+
+					e.preventDefault();
+					ganipara.removeItem("a4a63e511cfb09010c7ed5a947dd1d27", function(response) {
+						console.log(response);
+					});
+
+				});
+
+				GPjQuery(".jq_add_item").click(function(e) {
+
+					e.preventDefault();
+					ganipara.addItem("PRODUCT-YRJ7HR-A4KU0922", "20", function(response) {
+						console.log(response);
+					});
+
+				});
+
+			});
+
+		</script>
+
+	</head>
+	<style>
+		/**
+		 * 	Başla: Demo amaçlı CSS kuralları
+		 */
+		.info {
+			background-attachment: scroll;
+			background-clip: border-box;
+			background-color: #F8F8F8;
+			background-image: none;
+			background-origin: padding-box;
+			background-position: 0 0;
+			background-repeat: repeat;
+			background-size: auto auto;
+			border-bottom-color: #D9DEE1;
+			border-bottom-style: solid;
+			border-bottom-width: 1px;
+			border-top-color: #D9DEE1;
+			border-top-style: solid;
+			border-top-width: 1px;
+			padding: 20px;
+			margin-top: 20px;
+			text-align: center;
+		}
+		.info a {
+			color: #89C520 !important;
+		}
+		/**
+		 * 	Bitiş: Demo amaçlı CSS kuralları
+		 */
+	</style>
+	<body>
+		<h2>Ganipara JS API Kütüphanesi Demosu</h2>
+		<div class="info">
+			<a class="jq_add_item" href="#">Sepet'e Ürün Ekle</a>
+		</div>
+		<div class="info">
+			<a class="jq_clear" href="#">Sepet'i Temizle</a>
+		</div>
+		<div class="info">
+			<a class="jq_removeItem" href="#">Sepet'den Ürün Kaldır</a>
+		</div>
+		<div class="info">
+			<a class="jq_updateItem" href="#">Sepet'teki Ürünü Güncelle</a>
+		</div>
+		<div class="info">
+			<a class="jq_getCart" href="#">Sepet Verisini Çek</a>
+		</div>
+
+		<a class="gp-btn gp-btn-large gp-btn-green" href="javascript://" onclick="ganipara.action('viewCart'); return false;" rel="nofollow">Sepeti Göster</a>
+		<hr>
+		<a class="gp-btn gp-btn-large gp-btn-green" href="https://berkay.ganipara.home/products/add_to_cart/PRODUCT-YRJ7HR-A4KU0922" onclick="ganipara.action('addProductCart','PRODUCT-YRJ7HR-A4KU0922'); return false;" rel="nofollow">Sepete Ekle</a>
+
+	</body>
+</html>
+
