@@ -51,16 +51,19 @@
 					console.log("Ganipara: Modal Kapandı");
 				});
 
-				ganipara.register("onCart", function(response) {
+				ganipara.register("onCart", function() {
 					console.log("Ganipara: Sepet Değişti");
-					console.log(response);
-					$('#holder_cart_remove').empty();
-					$('#holder_cart_remove').append("<ul></ul>");
-					if ( typeof response.total_items !== "undefined" && response.total_items > 0) {
-						$.each(response.item, function(index, value) {
-							$('ul',$('#holder_cart_remove')).append("<li><a href='#' class='jq_removeItem' data-row='"+value.rowid+"'>"+value.name+"</a></li>");
-						});
-					}
+
+					ganipara.getCart(function(response) {
+						console.log(response);
+						$('#holder_cart_remove').empty();
+						$('#holder_cart_remove').append("<ul></ul>");
+						if ( typeof response.total_items !== "undefined" && response.total_items > 0) {
+							$.each(response.item, function(index, value) {
+								$('ul', $('#holder_cart_remove')).append("<li><a href='#' class='jq_removeItem' data-row='" + value.rowid + "'>" + value.name + "</a></li>");
+							});
+						}
+					});
 				});
 
 				GPjQuery(".jq_getCart").click(function(e) {
