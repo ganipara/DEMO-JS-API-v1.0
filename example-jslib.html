@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Ganipara JS API DEMO (jquery Versiyonu)</title>
+		<meta name="author" content="Ganipara" />
+		<!-- API'den dönen verilen incelenmesi içindir. Gerçek sitede kullanılmaması gerekir -->
+		<!--
+		<script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+		-->
+
+		<!-- jQuery kütüphanesini çağır -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		
+		<style>
+		body{
+			line-height: 24px;
+		    font-size: 14px;
+		       font-size-adjust: none;
+		       font-stretch: normal;
+		       font-style: normal;
+		       font-variant: normal;
+		       font-weight: normal;
+			   font-family: Arial,Sans-serif;
+		}
+		.section{
+		    background-attachment: scroll;
+		       background-clip: border-box;
+		       background-color: #F8F8F8;
+		       background-image: none;
+		       background-origin: padding-box;
+		       background-position: 0 0;
+		       background-repeat: repeat;
+		       background-size: auto auto;
+		       border-bottom-color: #D9DEE1;
+		       border-bottom-style: solid;
+		       border-bottom-width: 1px;
+		       border-top-color: #D9DEE1;
+		       border-top-style: solid;
+		       border-top-width: 1px;
+			   padding:20px;
+			   margin-bottom:20px;
+		}
+		.info{
+		    font-size: 13px;
+		    background-attachment: scroll;
+		       background-clip: border-box;
+		       background-color: #FCF8E3;
+			   color: #C09853;
+		       background-image: none;
+		       background-origin: padding-box;
+		       background-position: 0 0;
+		       background-repeat: repeat;
+		       background-size: auto auto;
+		       border-bottom-color: #FBEED5;
+		       border-bottom-style: solid;
+		       border-bottom-width: 1px;
+		       border-top-color: #FBEED5;
+		       border-top-style: solid;
+		       border-top-width: 1px;
+			   padding:20px;
+			   margin-bottom:20px;
+		}
+		
+		
+		</style>
+		<script>
+			var ganipara = ganipara || {};
+			var _gpv = _gpv || [];
+
+			// Ganipara mağaza adresi: ankara.ganipara.com
+			_gpv.push(['shop_id', 'ankara']);
+
+			// Gerçek sitede debug değeri false yada hiç kullanılmamalıdır.
+			_gpv.push(['debug', true]);
+
+			(function(a, b) {
+				a.onerror = function() {
+				};
+				var d = function() {
+					var a = b.createElement("script"), c = b.getElementsByTagName("script")[0];
+					a.src = "https://cdn.ganipara.com/script/api/v1.0/lib.js";
+					a.async = !0;
+					c.parentNode.insertBefore(a, c)
+				};
+				a.addEventListener ? a.addEventListener("load", d, !1) : a.attachEvent("onload", d)
+			})(window, document);
+
+		</script>
+
+		<script>
+		
+			// Demo amaçlı random int fonksiyonu
+			function getRandomInt (min, max) {
+		   	 	return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+		
+			$(document).ready(function() {
+				console.log("Document Ready");
+			});
+
+			$(document).on('GaniparaReady', function() {
+				
+				
+				
+				
+				// Ganipara Kütüphanesi Hazır
+				console.log("Ganipara: JS Library Ready");
+
+				// Ganipara Penceresi Kapandığında
+				ganipara.register("onGPBoxClose", function() {
+					console.log("Ganipara: Modal Closed");
+				});
+				
+
+				ganipara.register("onCart", function(evt) {
+					
+					if(evt.status===true){
+					console.log("Ganipara: Getting Cart Data");
+						ganipara.getCart(function(response) {
+							console.log("Ganipara: Cart Data OK - We love HTTP 200 :)");
+							console.log("Ganipara: Cart Total - "+ response.total_formatted);
+							console.log("Ganipara: Cart Cargo Unit - "+ response.total_cargo_unit);
+							console.log("Ganipara: Cart Item Count - "+ response.total_items);
+							console.log("Ganipara: Cart Require Shipping - "+ response.require_shipping);
+							console.log("Ganipara: Here is the cart JSON data");
+							
+								
+							$('#holder_cart_remove, #holder_cart_update, #holder_cart_detail').empty();
+							
+							if ( typeof response.total_items !== "undefined" && response.total_items > 0) {
+								
+								$('#holder_cart_detail').append("<p>Sepet Toplamı: "+response.total_formatted+" - Ürün Sayısı: "+response.total_items+ " - Kargo Birimi (Desi): "+response.total_cargo_unit+" <a href='#' class='jq_checkout'><b>[CHECKOUT]</b></a></p>");
+								
+								$('#holder_cart_remove, #holder_cart_update').append("<ul></ul>");
+								$.each(response.items, function(index, value) {
+									$('ul', $('#holder_cart_remove')).append("<li><a href='#' class='jq_removeItem' data-row='" + value['rowid'] + "'>" + value['name'] + "</a></li>");
+								});
+								$.each(response.items, function(index, value) {
+									$('ul', $('#holder_cart_update')).append("<li><a href='#' class='jq_updateItem' data-row='" + value['rowid'] + "'>" + value['name'] + "</a></li>");
+								});
+							} else {
+								$('#holder_cart_remove, #holder_cart_update').append("<p>Önce sepete ürün ekleyin</p>");
+							}
+						});
+					} else {
+						console.log("Ganipara: Cart data failed!");
+					}
+				});
+				
+
+				GPjQuery(".jq_getCart").live("click",function(e) {
+
+					e.preventDefault();
+					ganipara.onCart({status:true});
+
+				});
+				
+				GPjQuery(".jq_checkout").live("click",function(e) {
+
+					e.preventDefault();
+					console.log("Ganipara: Redirecting to checkout");
+					
+					ganipara.checkout(function(response) {
+				
+						if(response['status']==true){
+							console.log("Ganipara: Checkout URL is "+response.url);
+							window.location.href = response.url;
+						}
+					});					
+					
+				});
+
+				GPjQuery(".jq_clear").live("click",function(e) {
+
+					e.preventDefault();
+					console.log("Ganipara: Clearing the cart");
+					ganipara.clear(function(response) {
+						//console.log("Ganipara: Here is the response");
+						//console.log(response);
+					});
+
+				});
+
+				GPjQuery(".jq_updateItem").live("click",function(e) {
+
+					e.preventDefault();
+					console.log("Ganipara: Updating product on cart");
+					var rowid = $(this).data('row');
+					var quantity = getRandomInt(1,20);
+					console.log("Ganipara: Setting product count "+quantity);
+					ganipara.updateItem(rowid,quantity, function(response) {
+						//console.log("Ganipara: Here is the response");
+						//console.log(response);
+					});
+
+				});
+				GPjQuery(".jq_removeItem").live("click",function(e) {
+					
+					e.preventDefault();
+					console.log("Ganipara: Removing product from the cart");
+					var rowid = $(this).data('row');
+					ganipara.removeItem(rowid, function(response) {
+						//console.log("Ganipara: Here is the response");
+						//console.log(response);
+					});
+
+				});
+
+				GPjQuery(".jq_add_item").live("click",function(e) {
+
+					e.preventDefault();
+					var product = $(this).data('product');
+					console.log("Ganipara: Adding Product " + product + " to cart");
+					ganipara.addItem(product, "20", function(response) {
+						//console.log("Ganipara: Here is the response");
+						//console.log(response);
+					});
+
+				});
+				
+				ganipara.onCart({status:true});
+
+			});
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<h2>Ganipara JS API & Kütüphanesi Demosu</h2>
+		
+		<div class="info">
+			<p>Burada gösterilen özellikler ile dilediğiniz herhangi bir siteye, bloga, mobil siteye, javascript kullanabildiğiniz her türlü ortama <b>Eticaret (Sepet)</b> özelliğini kolayca kazandırabilirsiniz.</p>
+			<p>Şu anda incelemekte olduğunuz sayfa github üzerinde host edilen bir HTML dosyasıdır. Bunu kendi siteniz, blogunuz gibi düşünebilirsiniz.</p>
+			<p>Demo'nun çok karışık olmaması amacıyla sadece temel yetenekler gösterilmiştir</p>
+			<p>Detaylı bilgi için dökümantasyona <a href="https://yardim.ganipara.com/api/js-v1-0/" target="_blank">buradan</a> ulaşabilirsiniz</p>
+		</div>
+		<div id="holder_cart_detail">
+			
+		</div>
+		
+		<div class="section">
+		<h3>Ekle</h3>
+		<p>Demo amaçlı ankara.ganipara.com mağazasında tanımlı iki ürün aşağıda listelenmiştir.</p>
+		<div id="holder_product_add">
+			<!-- ankara.ganipara.com mağazında tanımlı "Vintage Gözlük" ürünü -->
+			<a class="jq_add_item" href="#" data-product="PRODUCT-7MV72E-2X1A0930">Vintage Gözlük</a>
+			<br>
+			<!-- ankara.ganipara.com mağazında tanımlı "Deri Kolye" ürünü -->
+			<a class="jq_add_item" href="#" data-product="PRODUCT-GX5KAN-KW0T0930">Deri Kolye</a>
+		</div>
+		</div>
+		
+		<div class="section">
+		<h3>Temizle</h3>
+		<div id="holder_cart_clear">
+			<a class="jq_clear" href="#">Sepet'i Temizle</a>
+		</div>
+		</div>
+		
+		<div class="section">
+		<h3>Kaldır</h3>
+		<div id="holder_cart_remove">
+			
+		</div>
+		</div>
+		
+		<div class="section">
+		<h3>Güncelle</h3>
+		<p>Ürün güncelleme demosu için sepetteki ürün sayısı rastgele olarak değiştiriliyor</p>
+		<div id="holder_cart_update">
+			
+		</div>
+		</div>
+		
+		<div class="section">
+		<h3>Sepet Verisi</h3>
+		<div id="holder_cart_get">
+			<a class="jq_getCart" href="#">Sepet Verisini Çek</a>
+		</div>
+		</div>
+
+	</body>
+</html>
+
