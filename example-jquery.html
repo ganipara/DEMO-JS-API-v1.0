@@ -92,7 +92,9 @@
 				GPjQuery(".jq_add_item").click(function(e) {
 
 					e.preventDefault();
-					ganipara.addItem("PRODUCT-YRJ7HR-A4KU0922", "20", function(response) {
+					var product = $(this).data('product');
+					console.log("Adding Product " + product + " to cart");
+					ganipara.addItem(product, "20", function(response) {
 						console.log(response);
 					});
 
@@ -103,11 +105,13 @@
 		</script>
 
 	</head>
-	
+
 	<body>
 		<h2>Ganipara JS API Kütüphanesi Demosu</h2>
 		<div class="info">
-			<a class="jq_add_item" href="#">Sepet'e Ürün Ekle</a>
+			<a class="jq_add_item" href="#" data-product="PRODUCT-7MV72E-2X1A0930">Sepet'e Ürün Ekle (Vintage Gözlük)</a>
+			<br>
+			<a class="jq_add_item" href="#" data-product="PRODUCT-GX5KAN-KW0T0930">Sepet'e Ürün Ekle (Deri Kolye)</a>
 		</div>
 		<div class="info">
 			<a class="jq_clear" href="#">Sepet'i Temizle</a>
