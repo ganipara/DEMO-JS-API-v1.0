@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Ganipara JS API & Kütüphanesi DEMO</title>
+		<meta name="author" content="Ganipara" />
+		<!-- API'den dönen verilen incelenmesi içindir. Gerçek sitede kullanılmaması gerekir -->
+		<!--
+		<script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+		-->
+
+		<!-- jQuery kütüphanesini çağır -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+		<style>
+			body {
+				line-height: 24px;
+				font-size: 14px;
+				font-size-adjust: none;
+				font-stretch: normal;
+				font-style: normal;
+				font-variant: normal;
+				font-weight: normal;
+				font-family: Arial, Sans-serif;
+			}
+			.section {
+				background-attachment: scroll;
+				background-clip: border-box;
+				background-color: #F8F8F8;
+				background-image: none;
+				background-origin: padding-box;
+				background-position: 0 0;
+				background-repeat: repeat;
+				background-size: auto auto;
+				border-bottom-color: #D9DEE1;
+				border-bottom-style: solid;
+				border-bottom-width: 1px;
+				border-top-color: #D9DEE1;
+				border-top-style: solid;
+				border-top-width: 1px;
+				padding: 20px;
+				margin-bottom: 20px;
+			}
+			.info {
+				font-size: 13px;
+				background-attachment: scroll;
+				background-clip: border-box;
+				background-color: #FCF8E3;
+				color: #C09853;
+				background-image: none;
+				background-origin: padding-box;
+				background-position: 0 0;
+				background-repeat: repeat;
+				background-size: auto auto;
+				border-bottom-color: #FBEED5;
+				border-bottom-style: solid;
+				border-bottom-width: 1px;
+				border-top-color: #FBEED5;
+				border-top-style: solid;
+				border-top-width: 1px;
+				padding: 20px;
+				margin-bottom: 20px;
+			}
+
+		</style>
+		<script>
+			var ganipara = ganipara || {};
+			var _gpv = _gpv || [];
+
+			// Ganipara mağaza adresi: ankara.ganipara.com
+			_gpv.push(['shop_id', 'ankara']);
+
+			// Gerçek sitede debug değeri false yada hiç kullanılmamalıdır.
+			_gpv.push(['debug', true]);
+
+			(function(a, b) {
+				a.onerror = function() {
+				};
+				var d = function() {
+					var a = b.createElement("script"), c = b.getElementsByTagName("script")[0];
+					a.src = "https://cdn.ganipara.com/script/api/v1.0/lib.js";
+					a.async = !0;
+					c.parentNode.insertBefore(a, c)
+				};
+				a.addEventListener ? a.addEventListener("load", d, !1) : a.attachEvent("onload", d)
+			})(window, document);
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<h2>Ganipara JS API & Kütüphanesi Demosu</h2>
+
+		<div class="info">
+			<p>
+				Burada gösterilen özellikler ile dilediğiniz herhangi bir siteye, bloga, mobil siteye, javascript kullanabildiğiniz her türlü ortama <b>Eticaret (Sepet)</b> özelliğini kolayca kazandırabilirsiniz.
+			</p>
+			<p>
+				Şu anda incelemekte olduğunuz sayfa github üzerinde host edilen bir HTML dosyasıdır. Bunu kendi siteniz, blogunuz gibi düşünebilirsiniz.
+			</p>
+			<p>
+				Demo'nun çok karışık olmaması amacıyla sadece temel yetenekler gösterilmiştir
+			</p>
+			<p>
+				Detaylı bilgi için dökümantasyona <a href="https://yardim.ganipara.com/api/js-v1-0/" target="_blank">buradan</a> ulaşabilirsiniz
+			</p>
+		</div>
+
+		<div class="section">
+			<h3>Sepeti Göster</h3>
+			<p>
+				Ganipara Butonları ile:
+			</p>
+			<div>
+				<a class="gp-btn gp-btn-large gp-btn-green" href="javascript://" onclick="ganipara.action('viewCart'); return false;" rel="nofollow">Sepeti Göster</a>
+			</div>
+			<p>
+				Standart bir link ile:
+			</p>
+			<div>
+				<a href="javascript://" onclick="ganipara.action('viewCart'); return false;" rel="nofollow">Sepeti Göster</a>
+			</div>
+		</div>
+
+		<div class="section">
+			<!-- ankara.ganipara.com mağazında tanımlı "Vintage Gözlük" ürünü -->
+			<h3>Ürün Ekle</h3>
+			<p>
+				Demo amaçlı ankara.ganipara.com mağazasında tanımlı iki ürün aşağıda listelenmiştir.
+			</p>
+
+			<p>
+				Ganipara Butonları ile:
+			</p>
+			<div>
+			<a class="gp-btn gp-btn-large gp-btn-green" href="https://ankara.ganipara.com/products/add_to_cart/PRODUCT-7MV72E-2X1A0930" onclick="ganipara.action('addProductCart','PRODUCT-7MV72E-2X1A0930'); return false;" rel="nofollow">Sepete Ekle - Vintage Gözlük</a>
+			</div>
+			<div>
+			<a class="gp-btn gp-btn-large gp-btn-green" href="https://ankara.ganipara.com/products/add_to_cart/PRODUCT-GX5KAN-KW0T0930" onclick="ganipara.action('addProductCart','PRODUCT-GX5KAN-KW0T0930'); return false;" rel="nofollow">Sepete Ekle - Deri Kolye</a>
+			</div>
+			<br>
+			<p>
+				Standart bir link ile:
+			</p>
+			<div>
+			<a class="gp-btn gp-btn-large gp-btn-green" href="https://ankara.ganipara.com/products/add_to_cart/PRODUCT-7MV72E-2X1A0930" onclick="ganipara.action('addProductCart','PRODUCT-7MV72E-2X1A0930'); return false;" rel="nofollow">Sepete Ekle - Vintage Gözlük</a>
+			</div>
+			<div>
+			<a class="gp-btn gp-btn-large gp-btn-green" href="https://ankara.ganipara.com/products/add_to_cart/PRODUCT-GX5KAN-KW0T0930" onclick="ganipara.action('addProductCart','PRODUCT-GX5KAN-KW0T0930'); return false;" rel="nofollow">Sepete Ekle - Deri Kolye</a>
+			</div>
+			<br>
+			
+		
+
+		</div>
+
+	</body>
+</html>
+
