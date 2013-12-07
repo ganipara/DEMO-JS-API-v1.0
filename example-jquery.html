@@ -49,7 +49,19 @@
 				// Ganipara Penceresi Kapandığında
 				ganipara.register("onGPBoxClose", function() {
 					console.log("Ganipara: Modal Kapandı");
-				})
+				});
+
+				ganipara.register("onCartUpdate", function(response) {
+					console.log("Ganipara: Sepet Değişti");
+					console.log(response);
+					$('#holder_cart_remove').empty();
+					$('#holder_cart_remove').append("<ul></ul>");
+					if ( typeof response.total_items !== "undefined" && response.total_items > 0) {
+						$.each(response.item, function(index, value) {
+							$('ul',$('#holder_cart_remove')).append("<li><a href='#' class='jq_removeItem' data-row='"+value.rowid+"'>"+value.name+"</a></li>");
+						});
+					}
+				});
 
 				GPjQuery(".jq_getCart").click(function(e) {
 
@@ -107,22 +119,26 @@
 	</head>
 
 	<body>
+
 		<h2>Ganipara JS API Kütüphanesi Demosu</h2>
-		<div class="info">
+		<div class="info" id="holder_product_add">
+			<!-- ankara.ganipara.com mağazında tanımlı "Vintage Gözlük" ürünü -->
 			<a class="jq_add_item" href="#" data-product="PRODUCT-7MV72E-2X1A0930">Sepet'e Ürün Ekle (Vintage Gözlük)</a>
 			<br>
+			<!-- ankara.ganipara.com mağazında tanımlı "Deri Kolye" ürünü -->
 			<a class="jq_add_item" href="#" data-product="PRODUCT-GX5KAN-KW0T0930">Sepet'e Ürün Ekle (Deri Kolye)</a>
 		</div>
-		<div class="info">
+
+		<div class="info" id="holder_cart_clear">
 			<a class="jq_clear" href="#">Sepet'i Temizle</a>
 		</div>
-		<div class="info">
-			<a class="jq_removeItem" href="#">Sepet'den Ürün Kaldır</a>
+		<div class="info" id="holder_cart_remove">
+
 		</div>
-		<div class="info">
+		<div class="info" id="holder_cart_remove">
 			<a class="jq_updateItem" href="#">Sepet'teki Ürünü Güncelle</a>
 		</div>
-		<div class="info">
+		<div class="info" id="holder_cart_get">
 			<a class="jq_getCart" href="#">Sepet Verisini Çek</a>
 		</div>
 
